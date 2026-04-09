@@ -1,0 +1,35 @@
+// Application tsconfig (browser target).
+//
+// Applies to every .ts/.tsx file under `src/`. Targets the browser, so DOM
+// libs are included and module resolution is delegated to the bundler (Vite).
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Bundler mode — Vite/esbuild handles module resolution; tsc never emits. */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* Linting — intentionally relaxed (matches the original Lovable defaults). */
+    "strict": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noImplicitAny": false,
+    "noFallthroughCasesInSwitch": false,
+
+    // `@/foo` resolves to `src/foo`. Keep in sync with the root tsconfig.json.
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["src"]
+}

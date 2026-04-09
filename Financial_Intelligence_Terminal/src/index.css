@@ -1,0 +1,432 @@
+/*
+ * terminal-performance.css
+ * SK하이닉스 터미널 — 성능 + 폰트 + 숫자 가독성 최적화
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+KR:wght@400;500;600&family=Noto+Sans+SC:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   1. Design Tokens (Tailwind + Custom)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@layer base {
+  :root,
+  .dark {
+    --background: 222 20% 8%;
+    --foreground: 210 20% 92%;
+
+    --card: 220 15% 12% / 0.6;
+    --card-foreground: 210 20% 92%;
+
+    --popover: 220 15% 10% / 0.8;
+    --popover-foreground: 210 20% 92%;
+
+    --primary: 210 20% 92%;
+    --primary-foreground: 222 20% 8%;
+
+    --secondary: 220 10% 16%;
+    --secondary-foreground: 210 15% 75%;
+
+    --muted: 220 12% 16%;
+    --muted-foreground: 215 10% 55%;
+
+    --accent: 214 100% 50%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --success: 142 71% 45%;
+    --success-foreground: 0 0% 100%;
+
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+
+    --border: 220 10% 20% / 0.6;
+    --input: 220 10% 18% / 0.6;
+    --ring: 214 100% 50%;
+
+    --radius: 0.625rem;
+
+    /* ── Font stacks ── */
+    --font-ui: "Noto Sans KR", "Noto Sans SC", "PingFang SC",
+               "Microsoft YaHei", "Malgun Gothic", -apple-system, sans-serif;
+    --font-mono: "JetBrains Mono", "Fira Code", ui-monospace,
+                 "Cascadia Code", monospace;
+
+    /* ── Glass tokens (dark) ── */
+    --glass-bg: 220 15% 12% / 0.5;
+    --glass-border: 220 10% 25% / 0.4;
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    --glass-blur: 12px;
+    --glass-highlight: rgba(255, 255, 255, 0.03);
+
+    --neon-glow: 214 100% 60%;
+
+    /* ── Number color tokens ── */
+    --num-positive: 160 84% 39%;
+    --num-negative: 0 91% 71%;
+    --num-neutral: 215 16% 62%;
+    --num-accent: 217 91% 60%;
+
+    --sidebar-background: 222 20% 10%;
+    --sidebar-foreground: 210 20% 85%;
+    --sidebar-primary: 210 20% 92%;
+    --sidebar-primary-foreground: 222 20% 8%;
+    --sidebar-accent: 220 12% 16%;
+    --sidebar-accent-foreground: 210 20% 85%;
+    --sidebar-border: 220 10% 18%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .light {
+    --background: 230 30% 96%;
+    --foreground: 0 0% 7%;
+
+    --card: 0 0% 100% / 0.4;
+    --card-foreground: 0 0% 7%;
+
+    --popover: 0 0% 100% / 0.6;
+    --popover-foreground: 0 0% 7%;
+
+    --primary: 0 0% 7%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 240 1% 94%;
+    --secondary-foreground: 0 0% 20%;
+
+    --muted: 230 20% 94%;
+    --muted-foreground: 0 0% 42%;
+
+    --accent: 214 100% 50%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --success: 142 71% 45%;
+    --success-foreground: 0 0% 100%;
+
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+
+    --border: 0 0% 100% / 0.5;
+    --input: 0 0% 100% / 0.5;
+    --ring: 214 100% 50%;
+
+    --radius: 0.625rem;
+
+    --font-ui: "Noto Sans KR", "Noto Sans SC", "PingFang SC",
+               "Microsoft YaHei", "Malgun Gothic", -apple-system, sans-serif;
+    --font-mono: "JetBrains Mono", "Fira Code", ui-monospace,
+                 "Cascadia Code", monospace;
+
+    --glass-bg: 0 0% 100% / 0.4;
+    --glass-border: 0 0% 100% / 0.5;
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.08);
+    --glass-blur: 12px;
+    --glass-highlight: rgba(255, 255, 255, 0.06);
+
+    --neon-glow: 214 100% 60%;
+
+    --num-positive: 160 84% 39%;
+    --num-negative: 0 91% 71%;
+    --num-neutral: 215 16% 62%;
+    --num-accent: 217 91% 60%;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   2. Global Styles
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply text-foreground antialiased;
+    font-family: var(--font-ui);
+    letter-spacing: -0.01em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    min-height: 100vh;
+    transition: background 0.3s ease;
+  }
+
+  /* Dark mode background */
+  .dark body,
+  :root body {
+    background:
+      radial-gradient(ellipse 90% 70% at 5% 10%, hsla(270, 40%, 15%, 0.6) 0%, transparent 50%),
+      radial-gradient(ellipse 80% 60% at 90% 20%, hsla(214, 60%, 15%, 0.55) 0%, transparent 50%),
+      radial-gradient(ellipse 70% 50% at 50% 90%, hsla(250, 30%, 12%, 0.4) 0%, transparent 45%),
+      linear-gradient(135deg, hsl(222, 20%, 8%) 0%, hsl(225, 18%, 10%) 50%, hsl(218, 22%, 9%) 100%);
+  }
+
+  /* Light mode background */
+  .light body {
+    background:
+      radial-gradient(ellipse 90% 70% at 5% 10%, hsla(270, 60%, 85%, 0.6) 0%, transparent 50%),
+      radial-gradient(ellipse 80% 60% at 90% 20%, hsla(214, 80%, 85%, 0.55) 0%, transparent 50%),
+      radial-gradient(ellipse 70% 50% at 50% 90%, hsla(250, 50%, 90%, 0.4) 0%, transparent 45%),
+      radial-gradient(ellipse 60% 40% at 30% 50%, hsla(200, 70%, 92%, 0.35) 0%, transparent 40%),
+      radial-gradient(ellipse 50% 50% at 75% 70%, hsla(280, 40%, 92%, 0.3) 0%, transparent 40%),
+      linear-gradient(135deg, hsl(230, 30%, 97%) 0%, hsl(240, 25%, 95%) 50%, hsl(220, 35%, 96%) 100%);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    letter-spacing: -0.025em;
+    font-weight: 600;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   3. Number Readability — Core CSS
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@layer components {
+  /* Bloomberg-style financial numbers */
+  .num {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1, "kern" 0;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  /* Number color utilities */
+  .ticker-positive {
+    @apply text-success;
+  }
+  .ticker-negative {
+    @apply text-destructive;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════════════
+     4. Glass Cards — GPU Optimized
+     ═══════════════════════════════════════════════════════════════════════════ */
+
+  .glass-card {
+    /* GPU compositing layer promotion */
+    will-change: transform;
+    transform: translateZ(0);
+    /* Repaint isolation */
+    contain: layout style paint;
+
+    background: hsla(var(--glass-bg));
+    backdrop-filter: blur(var(--glass-blur)) saturate(1.6);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.6);
+    border: 1px solid hsla(var(--glass-border));
+    box-shadow:
+      var(--glass-shadow),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.04);
+    border-radius: var(--radius);
+
+    /* Highlight gradient */
+    background-image: linear-gradient(
+      135deg,
+      var(--glass-highlight) 0%,
+      transparent 50%
+    );
+
+    transition: border-color 0.15s ease-out, box-shadow 0.15s ease-out;
+  }
+
+  /* Glass hover — for non-framer elements */
+  .glass-hover {
+    will-change: transform;
+    transform: translateZ(0);
+    transition: transform 0.15s ease-out,
+                background 0.15s ease-out,
+                box-shadow 0.15s ease-out;
+    border-radius: calc(var(--radius) * 0.5);
+  }
+  .glass-hover:hover {
+    transform: scale(1.01) translateZ(0);
+    background: hsla(var(--glass-bg), 0.6);
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.06);
+  }
+  .glass-hover:active {
+    transform: scale(0.99) translateZ(0);
+    transition: all 0.08s ease-out;
+  }
+
+  /* Shimmer loading skeleton */
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      hsla(var(--muted), 0.3) 25%,
+      hsla(var(--muted), 0.6) 50%,
+      hsla(var(--muted), 0.3) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s ease-in-out infinite;
+    border-radius: calc(var(--radius) * 0.3);
+  }
+
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  /* Glass card header separator */
+  .glass-card-header {
+    border-bottom: 1px solid hsla(var(--glass-border));
+    padding-bottom: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════════════
+     5. Table Optimization
+     ═══════════════════════════════════════════════════════════════════════════ */
+
+  .terminal-table {
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .terminal-table th,
+  .terminal-table td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .terminal-table .col-value  { width: 28%; text-align: right; }
+  .terminal-table .col-change { width: 22%; text-align: right; }
+  .terminal-table .col-name   { width: 50%; text-align: left; }
+
+  /* Neon glow for chart lines */
+  .neon-line {
+    filter: drop-shadow(0 0 6px hsla(var(--neon-glow), 0.6)) drop-shadow(0 0 12px hsla(var(--neon-glow), 0.3));
+  }
+
+  /* Text shadow for contrast on glass */
+  .text-glass-shadow {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  }
+
+  /* Live indicator — pulsing green dot */
+  .live-indicator {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: hsl(var(--success));
+    box-shadow: 0 0 6px hsl(var(--success) / 0.6), 0 0 12px hsl(var(--success) / 0.3);
+    animation: live-pulse 1.5s ease-in-out infinite;
+    will-change: opacity, box-shadow;
+  }
+
+  @keyframes live-pulse {
+    0%, 100% {
+      opacity: 0.5;
+      box-shadow: 0 0 4px hsl(var(--success) / 0.3);
+    }
+    50% {
+      opacity: 1;
+      box-shadow: 0 0 8px hsl(var(--success) / 0.7), 0 0 16px hsl(var(--success) / 0.4);
+    }
+  }
+
+  /* Terminal root isolation */
+  .terminal-root {
+    position: relative;
+    isolation: isolate;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   6. Animations — GPU Optimized (transform/opacity only)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes terminal-fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes terminal-pulse {
+  0%, 100% { opacity: 0.6; }
+  50%      { opacity: 1; }
+}
+
+.fade-transition {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Staggered card entrance */
+.glass-card:nth-child(1) { animation: terminal-fade-in 0.4s ease 0.05s both; }
+.glass-card:nth-child(2) { animation: terminal-fade-in 0.4s ease 0.10s both; }
+.glass-card:nth-child(3) { animation: terminal-fade-in 0.4s ease 0.15s both; }
+.glass-card:nth-child(4) { animation: terminal-fade-in 0.4s ease 0.20s both; }
+.glass-card:nth-child(5) { animation: terminal-fade-in 0.4s ease 0.25s both; }
+.glass-card:nth-child(6) { animation: terminal-fade-in 0.4s ease 0.30s both; }
+.glass-card:nth-child(7) { animation: terminal-fade-in 0.4s ease 0.35s both; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   7. Accessibility — Reduced Motion
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   8. CJK Font Fix — unicode-range isolation
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@font-face {
+  font-family: "TerminalKR";
+  src: local("Noto Sans KR"),
+       local("Apple SD Gothic Neo"),
+       local("Malgun Gothic");
+  unicode-range: U+AC00-D7A3, U+1100-11FF, U+3130-318F, U+A960-A97F, U+D7B0-D7FF;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "TerminalSC";
+  src: local("Noto Sans SC"),
+       local("PingFang SC"),
+       local("Microsoft YaHei"),
+       local("SimHei");
+  unicode-range: U+4E00-9FFF, U+3400-4DBF, U+20000-2A6DF, U+2A700-2B73F, U+F900-FAFF;
+  font-display: swap;
+}
+
+.terminal-text {
+  font-family:
+    "JetBrains Mono",
+    "TerminalKR",
+    "TerminalSC",
+    "Noto Sans KR",
+    "Noto Sans SC",
+    sans-serif;
+}

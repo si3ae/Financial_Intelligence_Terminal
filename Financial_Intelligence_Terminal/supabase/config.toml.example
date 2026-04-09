@@ -1,0 +1,22 @@
+# supabase/config.toml.example
+#
+# Copy this file to config.toml and fill in your project ID.
+# config.toml is listed in .gitignore and should never be committed.
+#
+# Your project ID is visible in the Supabase dashboard URL:
+#   https://supabase.com/dashboard/project/<your-project-id>
+# It is also available as VITE_SUPABASE_PROJECT_ID in your .env file.
+
+project_id = "your-project-id-here"
+
+# Edge Function settings
+# verify_jwt = false allows unauthenticated calls from the browser.
+# These functions are public by design — API keys are stored server-side
+# in Supabase Secrets (Dashboard → Settings → Edge Functions → Secrets),
+# never in client-side code or environment variables.
+
+[functions.market-data]
+verify_jwt = false
+
+[functions.ai-assistant]
+verify_jwt = false

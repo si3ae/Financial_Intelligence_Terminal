@@ -1,0 +1,30 @@
+// Root tsconfig.
+//
+// Uses TypeScript Project References to split application code
+// (`tsconfig.app.json`, browser target) from build-tooling code
+// (`tsconfig.node.json`, Node target). The two need different `lib` and
+// `target` settings, so they cannot share a single config.
+//
+// The `compilerOptions` block here is a fallback used by editors (e.g. VS Code)
+// when a file is opened outside the scope of either referenced project. The
+// authoritative options for the actual build live inside the referenced files.
+//
+// The `@/*` path alias must stay in sync with `resolve.alias` in
+// `vite.config.ts`. Changing one without the other will silently break either
+// runtime resolution or type checking.
+{
+  "files": [],
+  "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "noImplicitAny": false,
+    "noUnusedParameters": false,
+    "skipLibCheck": true,
+    "allowJs": true,
+    "noUnusedLocals": false,
+    "strictNullChecks": false
+  }
+}
